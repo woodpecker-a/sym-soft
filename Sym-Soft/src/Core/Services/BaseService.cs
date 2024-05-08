@@ -30,7 +30,7 @@ public class BaseService<T> : IService<T> where T : class
         return await MapRepository.GetAllAsync();
     }
 
-    public virtual async Task<T> GetByIdAsync(long id, bool isTracking = true)
+    public virtual async Task<T> GetByIdAsync(Guid id, bool isTracking = true)
     {
         return await MapRepository.GetByIdAsync(id);
     }

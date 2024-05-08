@@ -7,47 +7,47 @@ public class BaseRepository<T> : IRepository<T> where T : class
 {
     #region Configuration
 
+    protected DbContext _dbContext;
+    protected DbSet<T> _dbSet;
+
     protected BaseRepository(DbContext context)
     {
-        Db = context;
+        _dbContext = context;
+        _dbSet = _dbContext.Set<T>();
     }
 
     public DbSet<T> Table
     {
         get
         {
-            var set = Db.Set<T>();
+            var set = _dbContext.Set<T>();
             return set;
         }
     }
-
-    protected DbContext Db { get; set; }
-
-    protected DbSet<T> Set => Db.Set<T>();
 
     #endregion
 
     public async Task AddAsync(T entity)
     {
         if (entity == null) throw new ArgumentNullException();
-        await Set.AddAsync(entity);
+        await _dbSet.AddAsync(entity);
     }
 
     public async Task<ICollection<T>> GetAllAsync()
     {
-        return await Set.ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
     public async Task<T> GetByIdAsync(Guid id)
     {
-        var data = await Set.FindAsync(id) as T;
+        var data = await _dbSet.FindAsync(id) as T;
         return data;
     }
 
     public async Task RemoveAsync(T entity)
     {
         if (entity == null) throw new ArgumentNullException();
-        Set.Remove(entity);
+        _dbSet.Remove(entity);
     }
 
     public async Task UpdateAsync(T entity)
@@ -55,14 +55,14 @@ public class BaseRepository<T> : IRepository<T> where T : class
         if (entity == null) throw new ArgumentNullException();
         try
         {
-            Set.Attach(entity);
-            Db.Entry(entity).State = EntityState.Modified;
+            _dbSet.Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
         catch (InvalidOperationException e)
         {
             if (e.Message.ToLower().Contains("attach") || e.Message.ToLower().Contains("multiple instances"))
             {
-                Db.Entry(entity).State = EntityState.Detached;
+                _dbContext.Entry(entity).State = EntityState.Detached;
             }
         }
         catch (Exception ex)

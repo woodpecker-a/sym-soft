@@ -1,12 +1,17 @@
 ﻿using Domain.Entities;
 using Interface.Repository;
+using Microsoft.EntityFrameworkCore;
+using Persistence.ContextModel;
 
 namespace Repository;
 
-internal class CustomerRepository : BaseRepository<Customer>, ICustomerRepository, IDisposable
+public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository, IDisposable
 {
     #region Configuration
-    
+    public CustomerRepository(IApplicationDbContext context) : base((DbContext)context)
+    {
+    }
+
     #endregion
 
     public void Dispose()

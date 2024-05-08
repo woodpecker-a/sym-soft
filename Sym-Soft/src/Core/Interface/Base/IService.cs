@@ -7,7 +7,7 @@ namespace Interface.Base
         long CurrentUserId { get; set; }
         string BaseUrl { get; set; }
 
-        Task<T> GetByIdAsync(long id, bool isTracking = true);
+        Task<T> GetByIdAsync(Guid id, bool isTracking = true);
 
         Task<bool> AddAsync(T entity);
 

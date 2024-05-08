@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class Salesman
+public class Salesman : IEntity<Guid>
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = String.Empty;

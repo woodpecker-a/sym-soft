@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Core\Interface\Interface.csproj" />
+	  <ProjectReference Include="..\..\Core\Services\Services.csproj" />
+	  <ProjectReference Include="..\Persistence\Persistence.csproj" />
+	  <ProjectReference Include="..\Repository\Repository.csproj" />
+	</ItemGroup>
 </Project>
