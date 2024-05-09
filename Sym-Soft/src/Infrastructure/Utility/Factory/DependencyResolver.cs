@@ -22,6 +22,11 @@ public class DependencyResolver : Module
 
     protected override void Load(ContainerBuilder builder)
     {
+        builder.RegisterType<ApplicationDbContext>().AsSelf()
+                .WithParameter("connectionString", _connectionString)
+                .WithParameter("migrationAssemblyName", _migrationAssemblyName)
+                .InstancePerLifetimeScope();
+
         builder.RegisterType<ApplicationDbContext>().As<IApplicationDbContext>()
                 .WithParameter("connectionString", _connectionString)
                 .WithParameter("migrationAssemblyName", _migrationAssemblyName)
@@ -36,7 +41,7 @@ public class DependencyResolver : Module
         builder.RegisterType<InventoryService>().As<IInventoryService>()
             .InstancePerLifetimeScope();
 
-        builder.RegisterType<InventoryRepository>().As<ICustomerRepository>()
+        builder.RegisterType<InventoryRepository>().As<IInventoryRepository>()
             .InstancePerLifetimeScope();
 
         builder.RegisterType<ProductService>().As<IProductService>()
